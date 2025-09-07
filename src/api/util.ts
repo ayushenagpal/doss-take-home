@@ -16,13 +16,20 @@ export function getWorkspace(dbString: string, id: string): Workspace {
 export function createWorkspace(dbString: string): Workspace {
   const workspace: Workspace = {
     id: uuidv4(),
-    title: 'New Workspace',
+    title: '',
     buildShipments: [
       {
         id: uuidv4(),
         buildNumber: '',
         // Initialize the workspace with a single empty build shipment
-        shipments: [],
+        shipments: [
+          {
+            id: uuidv4(),
+            orderNumber: '',
+            description: '',
+            cost: 0,
+          }
+        ],
       },
     ],
   }
