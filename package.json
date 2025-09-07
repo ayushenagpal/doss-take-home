@@ -1,0 +1,59 @@
+{
+  "name": "take-hom",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.2.1",
+    "@fortawesome/free-solid-svg-icons": "^6.2.1",
+    "@fortawesome/react-fontawesome": "^0.2.0",
+    "@testing-library/jest-dom": "^5.14.1",
+    "@testing-library/react": "^13.0.0",
+    "@testing-library/user-event": "^13.2.1",
+    "@types/cors": "^2.8.13",
+    "@types/jest": "^27.0.1",
+    "@types/node": "^16.7.13",
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
+    "@types/uuid": "^9.0.0",
+    "axios": "^1.2.1",
+    "concurrently": "^7.6.0",
+    "cors": "^2.8.5",
+    "mock-fs": "^5.2.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.4.5",
+    "react-scripts": "5.0.1",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.4.2",
+    "uuid": "^9.0.0",
+    "web-vitals": "^3.1.0"
+  },
+  "scripts": {
+    "start": "concurrently \"react-scripts start\" \"cd src/api && ts-node app.ts && yarn watch\"",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "prettier": "prettier --config .prettierrc.json . --write"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "prettier": "2.8.1"
+  }
+}

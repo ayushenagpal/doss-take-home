@@ -1,0 +1,58 @@
+.WorkspaceDetails {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+
+.WorkspaceDetails__workspaceCard {
+  border: 2px solid forestgreen;
+  border-bottom: 0px;
+}
+
+.WorkspaceDetails__workspaceCard h3 {
+  color: black;
+  margin: 0px;
+  padding: 8px;
+}
+
+.WorkspaceDetails__editIcon {
+  padding-right: 8px;
+  align-self: center;
+  cursor: pointer;
+}
+
+table {
+  border: 2px solid forestgreen;
+  width: 600px;
+  border-spacing: 0px
+}
+
+tr > th {
+  padding: 8px;
+  border-bottom: 1px solid black;
+  width: 200px;
+}
+
+tr > th:not(:last-child) {
+  border-right: 1px solid black;
+}
+
+td {
+  padding: 8px;
+  text-align: center;
+}
+
+tr > td:not(:last-child) {
+  border-right: 1px solid black;
+}
+
+.WorkspaceDetails__newRow td {
+  border-top: 1px solid black;
+}
+
+.WorkspaceDetails__newRow input {
+  width: 190px;
+  height: 20px;
+  /* border: none; */
+}
