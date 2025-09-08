@@ -16,13 +16,20 @@ export function getWorkspace(dbString: string, id: string): Workspace {
 export function createWorkspace(dbString: string): Workspace {
   const workspace: Workspace = {
     id: uuidv4(),
-    title: 'New Workspace',
+    title: '',
     buildShipments: [
       {
         id: uuidv4(),
         buildNumber: '',
         // Initialize the workspace with a single empty build shipment
-        shipments: [],
+        shipments: [
+          {
+            id: uuidv4(),
+            orderNumber: '',
+            description: '',
+            cost: 0,
+          }
+        ],
       },
     ],
   }
@@ -35,3 +42,8 @@ export function updateWorkspace(dbString: string, workspace: Workspace): Workspa
   update(dbString, 'workspaces', workspace.id, workspace)
   return findOne(dbString, 'workspaces', workspace.id)
 }
+
+// TODO: Implement deleteShipment function
+// export function deleteShipment(dbString: string, id: string) : Workspace {
+//   // adding later
+// }
