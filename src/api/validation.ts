@@ -119,11 +119,11 @@ export function validateShipment(shipment: any): ValidationResult {
     minLength: 1,
     maxLength: 50
   }))
-  // Enforce allowed characters: alphanumeric and hyphens
+  // Enforce allowed characters: digits and hyphens only
   if (shipment.orderNumber !== null && shipment.orderNumber !== undefined) {
     const orderStr = String(shipment.orderNumber).trim()
-    if (orderStr !== '' && !/^[A-Za-z0-9-]+$/.test(orderStr)) {
-      errors.push(new ValidationError('Order Number may contain only letters, numbers, and hyphens', 'Order Number'))
+    if (orderStr !== '' && !/^[0-9-]+$/.test(orderStr)) {
+      errors.push(new ValidationError('Order Number may contain only digits and hyphens', 'Order Number'))
     }
   }
 
