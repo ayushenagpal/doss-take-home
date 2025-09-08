@@ -16,13 +16,20 @@ export function getWorkspace(dbString: string, id: string): Workspace {
 export function createWorkspace(dbString: string): Workspace {
   const workspace: Workspace = {
     id: uuidv4(),
-    title: 'New Workspace',
+    title: '',
     buildShipments: [
       {
         id: uuidv4(),
         buildNumber: '',
         // Initialize the workspace with a single empty build shipment
-        shipments: [],
+        shipments: [
+          {
+            id: uuidv4(),
+            orderNumber: '',
+            description: '',
+            cost: 0,
+          }
+        ],
       },
     ],
   }
@@ -34,4 +41,36 @@ export function createWorkspace(dbString: string): Workspace {
 export function updateWorkspace(dbString: string, workspace: Workspace): Workspace {
   update(dbString, 'workspaces', workspace.id, workspace)
   return findOne(dbString, 'workspaces', workspace.id)
+}
+
+/** Duplicate a shipment table within a workspace, generating new IDs */
+export function duplicateShipmentTable(
+  dbString: string,
+  workspaceId: string,
+  shipmentTableId: string
+): Workspace {
+  const workspace = getWorkspace(dbString, workspaceId)
+
+  const tableIndex = workspace.buildShipments.findIndex((t) => t.id === shipmentTableId)
+  if (tableIndex === -1) {
+    throw new Error('Could not find shipment table with id "' + shipmentTableId + '"')
+  }
+
+  const original = workspace.buildShipments[tableIndex]
+
+  const duplicatedTable = {
+    id: uuidv4(),
+    buildNumber: original.buildNumber ? original.buildNumber + ' (Copy)' : '',
+    shipments: original.shipments.map((s) => ({
+      id: uuidv4(),
+      orderNumber: s.orderNumber,
+      description: s.description,
+      cost: s.cost,
+    })),
+  }
+
+  // Insert duplicated table right after the original
+  workspace.buildShipments.splice(tableIndex + 1, 0, duplicatedTable)
+
+  return updateWorkspace(dbString, workspace)
 }
