@@ -18,3 +18,64 @@ This project contains a frontend and backend, with data stored in a JSON file.
 To run prettier, run `yarn prettier`.
 To run eslint, run `yarn eslint`.
 To run tests, run `yarn test --watchAll=false`.
+
+## API
+
+Base URL: `http://localhost:8080`
+
+### List workspaces
+GET `/`
+
+Example:
+```bash
+curl http://localhost:8080
+```
+
+### Get workspace details
+GET `/:workspaceId`
+
+Example:
+```bash
+curl http://localhost:8080/<workspaceId>
+```
+
+### Create workspace
+POST `/`
+
+Example:
+```bash
+curl -X POST http://localhost:8080
+```
+
+### Update workspace
+POST `/:workspaceId`
+
+Body: `{ "workspace": <workspaceObject> }`
+
+Example:
+```bash
+curl -X POST http://localhost:8080/<workspaceId> \
+  -H "Content-Type: application/json" \
+  -d '{"workspace": {"id": "<workspaceId>", "title": "Updated", "buildShipments": []}}'
+```
+
+### Duplicate shipment table
+POST `/:workspaceId/shipment-tables/:shipmentTableId/duplicate`
+
+Example:
+```bash
+curl -X POST http://localhost:8080/<workspaceId>/shipment-tables/<shipmentTableId>/duplicate
+```
+
+### Delete shipment (row)
+DELETE `/:workspaceId/shipment-tables/:shipmentTableId/shipments/:shipmentId`
+
+Example:
+```bash
+curl -X DELETE http://localhost:8080/<workspaceId>/shipment-tables/<shipmentTableId>/shipments/<shipmentId>
+```
+
+### Validation
+On update/create, invalid input returns `400` with `{ error, details }`. Notably:
+- `orderNumber`: digits and hyphens only
+- `cost`: positive integer (cents)

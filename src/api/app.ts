@@ -1,6 +1,6 @@
 import express from 'express'
 import cors from 'cors'
-import { createWorkspace, getWorkspace, getWorkspaces, updateWorkspace } from './util'
+import { createWorkspace, getWorkspace, getWorkspaces, updateWorkspace, deleteShipment } from './util'
 import { reset } from './db/db'
 
 const app = express()
@@ -40,6 +40,17 @@ app.get('/', (req, res) => {
 /** Creates a new workspace in the database and returns it */
 app.post('/', (req, res) => {
   res.json({ workspace: createWorkspace(dbString) })
+})
+
+/** Deletes a shipment from a shipment table within a workspace */
+app.delete('/:workspaceId/shipment-tables/:shipmentTableId/shipments/:shipmentId', (req, res) => {
+  try {
+    const { workspaceId, shipmentTableId, shipmentId } = req.params
+    const workspace = deleteShipment(dbString, workspaceId, shipmentTableId, shipmentId)
+    res.json({ workspace })
+  } catch (err) {
+    res.status(404).json({ error: (err as Error).message })
+  }
 })
 
 module.exports = app
