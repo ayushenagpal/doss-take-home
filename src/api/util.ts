@@ -42,3 +42,27 @@ export function updateWorkspace(dbString: string, workspace: Workspace): Workspa
   update(dbString, 'workspaces', workspace.id, workspace)
   return findOne(dbString, 'workspaces', workspace.id)
 }
+
+/** Delete a shipment from a specific shipment table within a workspace */
+export function deleteShipment(
+  dbString: string,
+  workspaceId: string,
+  shipmentTableId: string,
+  shipmentId: string
+): Workspace {
+  const workspace = getWorkspace(dbString, workspaceId)
+
+  const tableIndex = workspace.buildShipments.findIndex((t) => t.id === shipmentTableId)
+  if (tableIndex === -1) {
+    throw new Error('Could not find shipment table with id "' + shipmentTableId + '"')
+  }
+
+  const shipments = workspace.buildShipments[tableIndex].shipments
+  const shipmentIndex = shipments.findIndex((s) => s.id === shipmentId)
+  if (shipmentIndex === -1) {
+    throw new Error('Could not find shipment with id "' + shipmentId + '"')
+  }
+
+  shipments.splice(shipmentIndex, 1)
+  return updateWorkspace(dbString, workspace)
+}
