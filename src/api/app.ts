@@ -1,6 +1,6 @@
 import express from 'express'
 import cors from 'cors'
-import { createWorkspace, getWorkspace, getWorkspaces, updateWorkspace } from './util'
+import { createWorkspace, getWorkspace, getWorkspaces, updateWorkspace, duplicateShipmentTable } from './util'
 import { reset } from './db/db'
 
 const app = express()
@@ -40,6 +40,17 @@ app.get('/', (req, res) => {
 /** Creates a new workspace in the database and returns it */
 app.post('/', (req, res) => {
   res.json({ workspace: createWorkspace(dbString) })
+})
+
+/** Duplicates a shipment table within a workspace */
+app.post('/:workspaceId/shipment-tables/:shipmentTableId/duplicate', (req, res) => {
+  try {
+    const { workspaceId, shipmentTableId } = req.params
+    const workspace = duplicateShipmentTable(dbString, workspaceId, shipmentTableId)
+    res.json({ workspace })
+  } catch (error) {
+    res.status(404).json({ error: (error as Error).message })
+  }
 })
 
 module.exports = app
