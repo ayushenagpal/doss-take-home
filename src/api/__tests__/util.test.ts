@@ -16,7 +16,7 @@ describe('Util tests', () => {
 
   beforeEach(() => {
     mock({ [path.resolve(__dirname, testDbString)]: '' })
-    reset(testDbString)
+    reset(testDbString, workspaceId)
   })
 
   afterEach(() => {
