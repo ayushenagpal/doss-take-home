@@ -2,6 +2,7 @@ import express from 'express'
 import cors from 'cors'
 import { createWorkspace, getWorkspace, getWorkspaces, updateWorkspace } from './util'
 import { reset } from './db/db'
+import { validateWorkspace, formatValidationErrors, ValidationError } from './validation'
 
 const app = express()
 app.use(cors())
@@ -23,8 +24,26 @@ app.get('/:workspaceId', (req, res) => {
 
 /** Updates the workspace with the given ID and returns the updated workspace */
 app.post('/:workspaceId', (req, res) => {
-  const workspace = req.body.workspace
-  res.json({ workspace: updateWorkspace(dbString, workspace) })
+  try {
+    const workspace = req.body.workspace
+    
+    // Validate the workspace data
+    const validation = validateWorkspace(workspace)
+    if (!validation.isValid) {
+      return res.status(400).json({ 
+        error: 'Validation failed', 
+        details: formatValidationErrors(validation.errors) 
+      })
+    }
+    
+    res.json({ workspace: updateWorkspace(dbString, workspace) })
+  } catch (error) {
+    if (error instanceof ValidationError) {
+      res.status(400).json({ error: error.message })
+    } else {
+      res.status(500).json({ error: 'Internal server error' })
+    }
+  }
 })
 
 /** Returns all workspaces in the database */
@@ -39,7 +58,26 @@ app.get('/', (req, res) => {
 
 /** Creates a new workspace in the database and returns it */
 app.post('/', (req, res) => {
-  res.json({ workspace: createWorkspace(dbString) })
+  try {
+    // If workspace data is provided in the request body, validate it
+    if (req.body.workspace) {
+      const validation = validateWorkspace(req.body.workspace)
+      if (!validation.isValid) {
+        return res.status(400).json({ 
+          error: 'Validation failed', 
+          details: formatValidationErrors(validation.errors) 
+        })
+      }
+    }
+    
+    res.json({ workspace: createWorkspace(dbString) })
+  } catch (error) {
+    if (error instanceof ValidationError) {
+      res.status(400).json({ error: error.message })
+    } else {
+      res.status(500).json({ error: 'Internal server error' })
+    }
+  }
 })
 
 module.exports = app

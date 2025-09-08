@@ -42,3 +42,8 @@ export function updateWorkspace(dbString: string, workspace: Workspace): Workspa
   update(dbString, 'workspaces', workspace.id, workspace)
   return findOne(dbString, 'workspaces', workspace.id)
 }
+
+// TODO: Implement deleteShipment function
+// export function deleteShipment(dbString: string, id: string) : Workspace {
+//   // adding later
+// }
